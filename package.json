@@ -1,7 +1,7 @@
 {
   "name": "multicorder",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "main": "dist/multicorder.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -39,5 +39,10 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json"
+  ]
 }
