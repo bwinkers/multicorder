@@ -1,19 +1,16 @@
 {
   "name": "multicorder",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
-
   "main": "dist/multicorder.ssr.js",
   "browser": "dist/multicorder.esm.js",
   "module": "dist/multicorder.esm.js",
   "unpkg": "dist/multicorder.min.js",
-
   "files": [
     "dist/*",
     "src/**/*.vue"
   ],
   "sideEffects": false,
-
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.js",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
@@ -21,10 +18,7 @@
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
     "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife"
   },
-
-  "dependencies": {
-  },
-
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
