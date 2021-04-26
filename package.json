@@ -1,9 +1,12 @@
 {
   "name": "multicorder",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "license": "MIT",
   "description": "Record video from cameras or screen. A base Vue 2 component as well as full Vuetify 2 UI is provided.",
+  "keywords": "vue, vuetify, camera, recorder, webcam, screenshare, snapshot, multicorder",
   "homepage": "https://github.com/bwinkers/multicorder#README.md",
+  "repository": "github:bwinkers/multicorder",
+  "bugs": "https://github.com/bwinkers/multicorder/issues",
   "main": "dist/multicorder.ssr.js",
   "browser": "dist/multicorder.esm.js",
   "module": "dist/multicorder.esm.js",
@@ -61,5 +64,10 @@
   },
   "engines": {
     "node": ">=12"
+  },
+  "people": {
+    "name": "Brian Winkers",
+    "email": "bwinkers@gmail.com",
+    "url": "https://www.linkedin.com/in/bwinkers/"
   }
 }
