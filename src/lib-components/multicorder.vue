@@ -1,6 +1,6 @@
 <template>
   <div class="multicorder">
-    <video
+    <video v-show="view == 'video'"
       ref="video"
       :width="width"
       :height="height"
@@ -8,19 +8,26 @@
       :autoplay="autoplay"
       :playsinline="playsinline"
     />
+    <img v-show="view == 'snapshot'" :src="snapshot" width="100%" height="100%"/>
   </div>
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default /*#__PURE__*/ {
   name: "Multicorder",
   data() {
     return {
       source: null,
       canvas: null,
+      snapshot: null,
       cameras: [],
       camerasEmitted: null,
       browserScreenshareSupported: null,
+      recorder: null,
+      recordings: [],
+      view: 'video',
     };
   },
   props: {
@@ -85,14 +92,18 @@ export default /*#__PURE__*/ {
     this.initVideoOptions();
   },
   beforeDestroy() {
-    this.stopVideo();
+    // this.stopVideo();
   },
   watch: {
-    videoSource: function(sourceId) {
+    videoSource: function (sourceId) {
       this.changeVideoSource(sourceId);
-    }
+    },
   },
   methods: {
+    setView(view) {
+      this.view = view;
+      this.$emit('view-change', view);
+    },
     changeVideoSource(sourceId) {
       this.stopVideo();
       this.$emit("video-change", sourceId);
@@ -121,8 +132,9 @@ export default /*#__PURE__*/ {
       console.log("Starting Screenshare");
 
       try {
-        navigator.mediaDevices.getDisplayMedia().then((stream) => this.loadSrcStream(stream));
-  
+        navigator.mediaDevices
+          .getDisplayMedia()
+          .then((stream) => this.loadSrcStream(stream));
       } catch (err) {
         console.error("Error: " + err);
       }
@@ -255,6 +267,92 @@ export default /*#__PURE__*/ {
       }
 
       return cameras;
+    },
+    startVideoRecording() {
+      const stream = this.$refs.video.srcObject;
+      const recorder = new MediaRecorder(stream);
+      this.recorder = recorder;
+
+      this.recorder.ondataavailable = (event) => this.pushVideoData(event.data);
+      this.recorder.start();
+      console.log(this.recorder.state);
+    },
+    async pushVideoData(data) {
+      if (data.size > 0) {
+        const uid = await uuidv4();
+        data.name = "clip-" + uid + ".webm";
+        console.log("pushing video: " + data.name);
+        this.recordings.push(data);
+      }
+    },
+    async stopRecording() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.recorder.stop();
+        console.log("recording stopped");
+      }
+    },
+    pause() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.$refs.video.pause();
+      }
+    },
+    resume() {
+      if (this.$refs.video !== null && this.$refs.video.srcObject) {
+        this.$refs.video.play();
+      }
+    },
+    videoSnapshot() {
+      this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
+      this.setView('snapshot');
+    },
+    getCanvas() {
+      let video = this.$refs.video;
+
+      if (!this.ctx) {
+        let canvas = document.createElement("canvas");
+        canvas.height = video.videoHeight;
+        canvas.width = video.videoWidth;
+        this.canvas = canvas;
+
+        this.ctx = canvas.getContext("2d");
+      }
+
+      const { ctx, canvas } = this;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      return canvas;
+    },
+    async dataURItoBlob(dataURI) {
+      // convert base64/URLEncoded data component to raw binary data held in a string
+      var byteString;
+      if (dataURI.split(",")[0].indexOf("base64") >= 0)
+        byteString = atob(dataURI.split(",")[1]);
+      else byteString = unescape(dataURI.split(",")[1]);
+
+      // separate out the mime component
+      var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+      // write the bytes of the string to a typed array
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([ia], { type: mimeString });
+    },
+    async closeSnapshot() {
+      this.setView('video');
+      this.snapshot = null;
+    },
+    async downloadSnapshot() {
+      const imgInfo = await this.dataURItoBlob(this.snapshot);
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      a.href = this.snapshot;
+      const uid = await uuidv4();
+      a.download = uid + imgInfo.type.split("/").pop();
+      a.click();
     },
   },
 };
