@@ -3,7 +3,16 @@
   "version": "1.11.0",
   "license": "MIT",
   "description": "Record video from cameras or screen. A base Vue 2 component as well as full Vuetify 2 UI is provided.",
-  "keywords": ["vue", "vuetify", "camera", "recorder", "webcam", "screenshare", "snapshot", "multicorder"],
+  "keywords": [
+    "vue",
+    "vuetify",
+    "camera",
+    "recorder",
+    "webcam",
+    "screenshare",
+    "snapshot",
+    "multicorder"
+  ],
   "homepage": "https://github.com/bwinkers/multicorder#README.md",
   "repository": "github:bwinkers/multicorder",
   "bugs": "https://github.com/bwinkers/multicorder/issues",
@@ -26,7 +35,9 @@
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
     "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife"
   },
-  "dependencies": {},
+  "dependencies": {
+    "pug": ">=3.0.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
@@ -39,7 +50,6 @@
     "@vue/cli-service": "^4.5.10",
     "cross-env": "^7.0.3",
     "minimist": "^1.2.5",
-    "pug": ">=3.0.1",
     "rollup": "^2.36.1",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-vue": "^5.1.9",
