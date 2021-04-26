@@ -1,6 +1,6 @@
 {
   "name": "multicorder",
-  "version": "1.0.0",
+  "version": "1.9.2",
   "description": "",
   "main": "dist/multicorder.ssr.js",
   "browser": "dist/multicorder.esm.js",
@@ -36,6 +36,20 @@
     "rollup-plugin-vue": "^5.1.9",
     "vue": "^2.6.12",
     "vue-template-compiler": "^2.6.12"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
   },
   "peerDependencies": {
     "vue": "^2.6.12"

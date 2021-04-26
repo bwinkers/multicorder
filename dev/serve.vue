@@ -13,6 +13,6 @@ export default Vue.extend({
 
 <template>
   <div id="app">
-    <multicorder-sample />
+    <multicorder />
   </div>
 </template>
