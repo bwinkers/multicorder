@@ -240,11 +240,17 @@ var script = /*#__PURE__*/{
       type: Array,
       default: () => {
         return [{
-          divider: true,
-          header: "Screen Sharing"
-        }, {
           text: "Screen share",
           value: "screenshare"
+        }];
+      }
+    },
+    staticVideoOptionsHeader: {
+      type: Array,
+      default: () => {
+        return [{
+          divider: true,
+          header: "Screen Sharing"
         }];
       }
     }
@@ -326,12 +332,15 @@ var script = /*#__PURE__*/{
     },
 
     initVideoOptions() {
-      if (this.videoTypes.includes("camera")) {
-        this.initCameras();
-      }
-
       if (this.videoTypes.includes("screen")) {
         this.initScreen();
+      }
+
+      if (this.videoTypes.includes("camera")) {
+        this.initCameras();
+      } else {
+        this.$emit("cameras", []);
+        this.camerasEmitted = true;
       }
     },
 
@@ -428,9 +437,12 @@ var script = /*#__PURE__*/{
 
     listFromCameras(cameras) {
       console.log(cameras);
+      console.log(this.browserScreenshareSupported);
 
-      if (this.browserScreenshareSupported) {
-        return [...this.camerasHeader, ...cameras, ...this.staticVideoOptions];
+      if (this.browserScreenshareSupported && cameras.length > 0) {
+        return [...this.camerasHeader, ...cameras, ...this.staticVideoOptionsHeader, ...this.staticVideoOptions];
+      } else if (this.browserScreenshareSupported && cameras.length === 0) {
+        return this.staticVideoOptions;
       }
 
       return cameras;

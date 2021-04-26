@@ -62,3 +62,25 @@ import  MulticorderUI  from 'multicorder/vuetify_ui/src/components/MulticorderUI
 ```html
 <MulticorderUI />
 ```
+
+#### Define video options
+
+You can limit the options to just cameras or just sreensharing if that is more appropriate for your needs.
+
+Just define the videoTypes prop on the component as an array with he options(s) you want to support.
+
+```html
+<MulticorderUI 
+  :videoTypes="['screen', 'camera']"
+/>
+```
+
+or if you just want cameras offered:
+
+```html
+<MulticorderUI 
+  :videoTypes="['camera']"
+/>
+```
+
+The only options are `screen` and `camera`.

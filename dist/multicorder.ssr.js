@@ -334,11 +334,17 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       type: Array,
       default: function _default() {
         return [{
-          divider: true,
-          header: "Screen Sharing"
-        }, {
           text: "Screen share",
           value: "screenshare"
+        }];
+      }
+    },
+    staticVideoOptionsHeader: {
+      type: Array,
+      default: function _default() {
+        return [{
+          divider: true,
+          header: "Screen Sharing"
         }];
       }
     }
@@ -424,12 +430,15 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       this.$emit("started", stream);
     },
     initVideoOptions: function initVideoOptions() {
-      if (this.videoTypes.includes("camera")) {
-        this.initCameras();
-      }
-
       if (this.videoTypes.includes("screen")) {
         this.initScreen();
+      }
+
+      if (this.videoTypes.includes("camera")) {
+        this.initCameras();
+      } else {
+        this.$emit("cameras", []);
+        this.camerasEmitted = true;
       }
     },
     initScreen: function initScreen() {
@@ -532,9 +541,12 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
     },
     listFromCameras: function listFromCameras(cameras) {
       console.log(cameras);
+      console.log(this.browserScreenshareSupported);
 
-      if (this.browserScreenshareSupported) {
-        return [].concat(_toConsumableArray(this.camerasHeader), _toConsumableArray(cameras), _toConsumableArray(this.staticVideoOptions));
+      if (this.browserScreenshareSupported && cameras.length > 0) {
+        return [].concat(_toConsumableArray(this.camerasHeader), _toConsumableArray(cameras), _toConsumableArray(this.staticVideoOptionsHeader), _toConsumableArray(this.staticVideoOptions));
+      } else if (this.browserScreenshareSupported && cameras.length === 0) {
+        return this.staticVideoOptions;
       }
 
       return cameras;
@@ -910,7 +922,7 @@ var __vue_inject_styles__ = undefined;
 var __vue_scope_id__ = undefined;
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-78bf8207";
+var __vue_module_identifier__ = "data-v-079b3b13";
 /* functional template */
 
 var __vue_is_functional_template__ = false;
