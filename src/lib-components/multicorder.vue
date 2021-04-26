@@ -9,6 +9,13 @@
       :playsinline="playsinline"
     />
     <img v-show="view == 'snapshot'" :src="snapshot" width="100%" height="100%"/>
+    <video v-show="view == 'videoPlayer'"
+      ref="videoPlayer"
+      :width="width"
+      :height="height"
+      :src="playerSource"
+      :playsinline="playsinline"
+    />
   </div>
 </template>
 
@@ -20,6 +27,7 @@ export default /*#__PURE__*/ {
   data() {
     return {
       source: null,
+      playerSource: null,
       canvas: null,
       snapshot: null,
       cameras: [],
@@ -28,6 +36,7 @@ export default /*#__PURE__*/ {
       recorder: null,
       recordings: [],
       view: 'video',
+      nowPlaying: null
     };
   },
   props: {
@@ -281,8 +290,9 @@ export default /*#__PURE__*/ {
       if (data.size > 0) {
         const uid = await uuidv4();
         data.name = "clip-" + uid + ".webm";
-        console.log("pushing video: " + data.name);
+        console.log(data);
         this.recordings.push(data);
+        this.$emit('new-recording', {name: data.name, size: data.size })
       }
     },
     async stopRecording() {
@@ -354,6 +364,50 @@ export default /*#__PURE__*/ {
       a.download = uid + imgInfo.type.split("/").pop();
       a.click();
     },
+    async downloadRecording(recordingIndex) {
+      var blob = this.recordings[recordingIndex];
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      a.href = url;
+      a.download = "test.webm";
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    deleteRecording(index) {
+      console.log('deleting' + index)
+      this.recordings.splice(index, 1);
+      this.$emit('delete-recording', index);
+    },
+    async loadRecording(index) {
+      const recording = this.recordings[index];
+      const clip = window.URL.createObjectURL(recording);
+      this.playerSource = clip;
+      this.nowPlaying = index;
+      this.setView('videoPlayer');
+      this.$emit('player-loaded', true);
+      },
+    playRecording() {
+      this.$refs.videoPlayer.play();
+    },
+    pausePlayer() {
+      if (this.$refs.videoPlayer !== null ) {
+        this.$refs.videoPlayer.pause();
+      }
+    },
+    resumePlayer() {
+      if (this.$refs.videoPlayer !== null) {
+        this.$refs.videoPlayer.play();
+      }
+    },
+    deletePlayerRecording() {
+      this.setView('video');
+      this.deleteRecording(this.nowPlaying);
+    },
+    closePlayer() {
+      this.setView('video');
+    }
   },
 };
 </script>
