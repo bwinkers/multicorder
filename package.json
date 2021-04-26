@@ -1,6 +1,6 @@
 {
   "name": "multicorder",
-  "version": "1.9.2",
+  "version": "1.10.0",
   "description": "",
   "main": "dist/multicorder.ssr.js",
   "browser": "dist/multicorder.esm.js",
@@ -9,9 +9,9 @@
   "files": [
     "dist/*",
     "src/**/*.vue",
-    "demo/**/*.js",
-    "demo/**/*.vue",
-    "demo/**/*.json"
+    "vuetify_ui/**/*.js",
+    "vuetify_ui/**/*.vue",
+    "vuetify_ui/**/*.json"
   ],
   "sideEffects": false,
   "scripts": {

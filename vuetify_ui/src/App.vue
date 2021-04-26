@@ -6,7 +6,7 @@
       dark
     >
       <div class="d-flex align-center">
-      <h1>Multicorder Demo</h1>
+      <h1>Multicorder Vuetify Demo</h1>
       </div>
       <v-spacer></v-spacer>
       
@@ -21,19 +21,19 @@
     </v-app-bar>
 
     <v-main>
-      <MulticorderHotReload />
+      <MulticorderUI />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import MulticorderHotReload from './components/MulticorderHotReload';
+import MulticorderUI from './components/MulticorderUI';
 
 export default {
   name: 'App',
 
   components: {
-    MulticorderHotReload,
+    MulticorderUI,
   },
 
   data: () => ({

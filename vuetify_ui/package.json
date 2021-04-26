@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "multicorder": "file:../multicorder-1.9.1.tgz",
+    "multicorder": "^1.9.2",
     "vue": "^2.6.11",
-    "vuetify": "^2.4.0"
+    "vuetify": "^2.4.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -21,10 +21,10 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.32.0",
-    "sass-loader": "^10.0.0",
-    "vue-cli-plugin-vuetify": "~2.3.1",
+    "sass-loader": "^10.1.1",
+    "vue-cli-plugin-vuetify": "^2.3.1",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.7.0"
+    "vuetify-loader": "^1.7.2"
   },
   "eslintConfig": {
     "root": true,
