@@ -1,6 +1,7 @@
 {
   "name": "multicorder",
-  "version": "1.10.1",
+  "version": "1.10.2",
+  "license": "MIT",
   "description": "Record video from cameras or screen. A base Vue 2 component as well as full Vuetify 2 UI is provided.",
   "homepage": "https://github.com/bwinkers/multicorder#README.md",
   "main": "dist/multicorder.ssr.js",
