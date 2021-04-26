@@ -21,19 +21,19 @@
     </v-app-bar>
 
     <v-main>
-      <MulticorderUI />
+      <MulticorderHotReload />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import MulticorderUI from './components/MulticorderUI';
+import MulticorderHotReload from './components/MulticorderHotReload';
 
 export default {
   name: 'App',
 
   components: {
-    MulticorderUI,
+    MulticorderHotReload,
   },
 
   data: () => ({

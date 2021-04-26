@@ -8,7 +8,10 @@
   "unpkg": "dist/multicorder.min.js",
   "files": [
     "dist/*",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "demo/**/*.js",
+    "demo/**/*.vue",
+    "demo/**/*.json"
   ],
   "sideEffects": false,
   "scripts": {

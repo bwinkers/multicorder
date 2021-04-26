@@ -113,10 +113,13 @@
 </template>
 
 <script>
+/**
+ * For Hot reload load the `*.vue` files from the parent `/src/` directly.
+ */
 import Multicorder from "../../../src/lib-components/multicorder.vue";
 
 export default {
-  name: "MulticorderDemo",
+  name: "MulticorderHotReload",
   components: {
     Multicorder,
   },
