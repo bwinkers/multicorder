@@ -1,5 +1,7 @@
 # Multicorder
 
+[![multicorder](https://snyk.io/advisor/npm-package/multicorder/badge.svg)](https://snyk.io/advisor/npm-package/multicorder)
+
 * Record video from cameras
 * Record video from desktop screens
 * Playback recordings
@@ -19,6 +21,11 @@ A full featured Vuetify UI is included. If you are alredy using Vuetify you can 
 3. Full AWS Amplify integration (coming soon!)
 
 This was designed from the outset to work well with AWS Amplify and S3 Storage. We'll publish a number of sample apps that showcase the functionality.
+
+## Demo Site
+
+You can see the app [deployed on Netlify](https://eloquent-kowalevski-0dbda6.netlify.app/).
+
 
 ## Installing
 

@@ -116,9 +116,9 @@
 <script>
 /**
  * For Hot reload load the `*.vue` files from the parent `/src/` directly.
+ * import { Multicorder } from '../../../src/lib-components/index.js'
  */
-// import Multicorder from '../../../src/lib-components/multicorder.vue'
-import { Multicorder } from "multicorder";
+ import { Multicorder } from "multicorder";
 
 export default {
   name: "MulticorderUI",
