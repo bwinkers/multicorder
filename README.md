@@ -1,6 +1,6 @@
 # Multicorder
 
-[![multicorder](https://snyk.io/advisor/npm-package/multicorder/badge.svg)](https://snyk.io/advisor/npm-package/multicorder)
+[![multicorder](https://snyk.io/advisor/npm-package/multicorder/badge.svg)](https://snyk.io/advisor/npm-package/multicorder)  
 
 * Record video from cameras
 * Record video from desktop screens
@@ -12,7 +12,7 @@
 
 1. Lightweight
 
-All of the core logic is in a single Vue 2 component with no depenedncies. All the functionality can harnessed in any Vue 2 or Vue 3 app.
+All of the core logic is in a single Vue 2 component with no depenendcies outside of Vue. All the functionality can harnessed in any Vue 2 or Vue 3 app.
 
 2. Batteries included!
 

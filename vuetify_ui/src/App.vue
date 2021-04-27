@@ -21,9 +21,13 @@
     </v-app-bar>
 
     <v-main>
+      <v-row justify="center" align="center">
+        <v-col cols="12" sm="4">
       <MulticorderUI 
         :videoTypes="['screen', 'camera']"
       />
+      </v-col>
+      </v-row>
     </v-main>
   </v-app>
 </template>
@@ -43,3 +47,12 @@ export default {
   }),
 };
 </script>
+
+<style scoped>
+.main {
+  max-width: 800px;
+
+  align-items: center;
+  justify-content: center;
+}
+</style>
