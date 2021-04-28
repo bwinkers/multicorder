@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "multicorder": "^1.10.3",
+    "multicorder": "^1.12.0",
     "vue": "^2.6.11",
     "vuetify": "^2.4.11",
     "ssri": ">=8.0.1"
