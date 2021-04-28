@@ -286,7 +286,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       browserScreenshareSupported: null,
       recorder: null,
       recordings: [],
-      view: 'video',
+      view: "video",
       nowPlaying: null
     };
   },
@@ -362,7 +362,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
   methods: {
     setView: function setView(view) {
       this.view = view;
-      this.$emit('view-change', view);
+      this.$emit("view-change", view);
     },
     changeVideoSource: function changeVideoSource(sourceId) {
       this.stopVideo();
@@ -384,6 +384,9 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
           deviceId: {
             exact: device
           }
+        },
+        audio: {
+          echoCancellation: true
         }
       };
 
@@ -460,7 +463,10 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       var _this4 = this;
 
       var constraints = {
-        video: true
+        video: true,
+        audio: {
+          echoCancellation: true
+        }
       };
 
       if (this.resolution) {
@@ -589,7 +595,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
 
                 _this8.recordings.push(data);
 
-                _this8.$emit('new-recording', {
+                _this8.$emit("new-recording", {
                   name: data.name,
                   size: data.size
                 });
@@ -636,7 +642,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
     },
     videoSnapshot: function videoSnapshot() {
       this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
-      this.setView('snapshot');
+      this.setView("snapshot");
     },
     getCanvas: function getCanvas() {
       var video = this.$refs.video;
@@ -693,7 +699,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _this10.setView('video');
+                _this10.setView("video");
 
                 _this10.snapshot = null;
 
@@ -767,9 +773,9 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       }))();
     },
     deleteRecording: function deleteRecording(index) {
-      console.log('deleting' + index);
+      console.log("deleting" + index);
       this.recordings.splice(index, 1);
-      this.$emit('delete-recording', index);
+      this.$emit("delete-recording", index);
     },
     loadRecording: function loadRecording(index) {
       var _this13 = this;
@@ -785,9 +791,9 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
                 _this13.playerSource = clip;
                 _this13.nowPlaying = index;
 
-                _this13.setView('videoPlayer');
+                _this13.setView("videoPlayer");
 
-                _this13.$emit('player-loaded', true);
+                _this13.$emit("player-loaded", true);
 
               case 6:
               case "end":
@@ -811,11 +817,11 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       }
     },
     deletePlayerRecording: function deletePlayerRecording() {
-      this.setView('video');
+      this.setView("video");
       this.deleteRecording(this.nowPlaying);
     },
     closePlayer: function closePlayer() {
-      this.setView('video');
+      this.setView("video");
     }
   }
 };function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -904,7 +910,7 @@ var __vue_render__ = function __vue_render__() {
 
   return _c('div', {
     staticClass: "multicorder"
-  }, [_vm._ssrNode("<video" + _vm._ssrAttr("width", _vm.width) + _vm._ssrAttr("height", _vm.height) + _vm._ssrAttr("src", _vm.source) + _vm._ssrAttr("autoplay", _vm.autoplay) + _vm._ssrAttr("playsinline", _vm.playsinline) + _vm._ssrStyle(null, null, {
+  }, [_vm._ssrNode("<video" + _vm._ssrAttr("width", _vm.width) + _vm._ssrAttr("height", _vm.height) + _vm._ssrAttr("src", _vm.source) + _vm._ssrAttr("autoplay", _vm.autoplay) + _vm._ssrAttr("playsinline", _vm.playsinline) + " muted=\"muted\"" + _vm._ssrStyle(null, null, {
     display: _vm.view == 'video' ? '' : 'none'
   }) + "></video> <img" + _vm._ssrAttr("src", _vm.snapshot) + " width=\"100%\" height=\"100%\"" + _vm._ssrStyle(null, null, {
     display: _vm.view == 'snapshot' ? '' : 'none'
@@ -922,7 +928,7 @@ var __vue_inject_styles__ = undefined;
 var __vue_scope_id__ = undefined;
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-079b3b13";
+var __vue_module_identifier__ = "data-v-cc6cee80";
 /* functional template */
 
 var __vue_is_functional_template__ = false;

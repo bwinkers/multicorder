@@ -191,7 +191,7 @@ var script = /*#__PURE__*/{
       browserScreenshareSupported: null,
       recorder: null,
       recordings: [],
-      view: 'video',
+      view: "video",
       nowPlaying: null
     };
   },
@@ -271,7 +271,7 @@ var script = /*#__PURE__*/{
   methods: {
     setView(view) {
       this.view = view;
-      this.$emit('view-change', view);
+      this.$emit("view-change", view);
     },
 
     changeVideoSource(sourceId) {
@@ -293,6 +293,9 @@ var script = /*#__PURE__*/{
           deviceId: {
             exact: device
           }
+        },
+        audio: {
+          echoCancellation: true
         }
       };
 
@@ -363,7 +366,10 @@ var script = /*#__PURE__*/{
 
     testVideoAccess() {
       let constraints = {
-        video: true
+        video: true,
+        audio: {
+          echoCancellation: true
+        }
       };
 
       if (this.resolution) {
@@ -465,7 +471,7 @@ var script = /*#__PURE__*/{
         data.name = "clip-" + uid + ".webm";
         console.log(data);
         this.recordings.push(data);
-        this.$emit('new-recording', {
+        this.$emit("new-recording", {
           name: data.name,
           size: data.size
         });
@@ -493,7 +499,7 @@ var script = /*#__PURE__*/{
 
     videoSnapshot() {
       this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
-      this.setView('snapshot');
+      this.setView("snapshot");
     },
 
     getCanvas() {
@@ -534,7 +540,7 @@ var script = /*#__PURE__*/{
     },
 
     async closeSnapshot() {
-      this.setView('video');
+      this.setView("video");
       this.snapshot = null;
     },
 
@@ -562,9 +568,9 @@ var script = /*#__PURE__*/{
     },
 
     deleteRecording(index) {
-      console.log('deleting' + index);
+      console.log("deleting" + index);
       this.recordings.splice(index, 1);
-      this.$emit('delete-recording', index);
+      this.$emit("delete-recording", index);
     },
 
     async loadRecording(index) {
@@ -572,8 +578,8 @@ var script = /*#__PURE__*/{
       const clip = window.URL.createObjectURL(recording);
       this.playerSource = clip;
       this.nowPlaying = index;
-      this.setView('videoPlayer');
-      this.$emit('player-loaded', true);
+      this.setView("videoPlayer");
+      this.$emit("player-loaded", true);
     },
 
     playRecording() {
@@ -593,12 +599,12 @@ var script = /*#__PURE__*/{
     },
 
     deletePlayerRecording() {
-      this.setView('video');
+      this.setView("video");
       this.deleteRecording(this.nowPlaying);
     },
 
     closePlayer() {
-      this.setView('video');
+      this.setView("video");
     }
 
   }
@@ -705,7 +711,11 @@ var __vue_render__ = function () {
       "height": _vm.height,
       "src": _vm.source,
       "autoplay": _vm.autoplay,
-      "playsinline": _vm.playsinline
+      "playsinline": _vm.playsinline,
+      "muted": "muted"
+    },
+    domProps: {
+      "muted": true
     }
   }), _vm._v(" "), _c('img', {
     directives: [{
