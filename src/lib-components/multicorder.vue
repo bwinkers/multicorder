@@ -1,15 +1,18 @@
 <template>
   <div class="multicorder">
-    <video v-show="view == 'video'"
+    <video
+      v-show="view == 'video'"
       ref="video"
       :width="width"
       :height="height"
       :src="source"
       :autoplay="autoplay"
       :playsinline="playsinline"
+      muted="muted"
     />
-    <img v-show="view == 'snapshot'" :src="snapshot" width="100%" height="100%"/>
-    <video v-show="view == 'videoPlayer'"
+    <img v-show="view == 'snapshot'" :src="snapshot" width="100%" height="100%" />
+    <video
+      v-show="view == 'videoPlayer'"
       ref="videoPlayer"
       :width="width"
       :height="height"
@@ -35,8 +38,8 @@ export default /*#__PURE__*/ {
       browserScreenshareSupported: null,
       recorder: null,
       recordings: [],
-      view: 'video',
-      nowPlaying: null
+      view: "video",
+      nowPlaying: null,
     };
   },
   props: {
@@ -99,7 +102,7 @@ export default /*#__PURE__*/ {
           {
             divider: true,
             header: "Screen Sharing",
-          }
+          },
         ];
       },
     },
@@ -118,7 +121,7 @@ export default /*#__PURE__*/ {
   methods: {
     setView(view) {
       this.view = view;
-      this.$emit('view-change', view);
+      this.$emit("view-change", view);
     },
     changeVideoSource(sourceId) {
       this.stopVideo();
@@ -132,7 +135,12 @@ export default /*#__PURE__*/ {
       }
     },
     loadCamera(device) {
-      let constraints = { video: { deviceId: { exact: device } } };
+      let constraints = {
+                          video: {
+                              deviceId: { exact: device }
+                              },
+                          audio: { echoCancellation: true }
+                          };
 
       if (this.resolution) {
         constraints.video.height = this.resolution.height;
@@ -197,7 +205,7 @@ export default /*#__PURE__*/ {
       this.testVideoAccess();
     },
     testVideoAccess() {
-      let constraints = { video: true };
+      let constraints = { video: true, audio: { echoCancellation: true } };
 
       if (this.resolution) {
         constraints.video = {};
@@ -283,7 +291,12 @@ export default /*#__PURE__*/ {
       console.log(cameras);
       console.log(this.browserScreenshareSupported);
       if (this.browserScreenshareSupported && cameras.length > 0) {
-        return [...this.camerasHeader, ...cameras, ...this.staticVideoOptionsHeader, ...this.staticVideoOptions];
+        return [
+          ...this.camerasHeader,
+          ...cameras,
+          ...this.staticVideoOptionsHeader,
+          ...this.staticVideoOptions,
+        ];
       } else if (this.browserScreenshareSupported && cameras.length === 0) {
         return this.staticVideoOptions;
       }
@@ -305,7 +318,7 @@ export default /*#__PURE__*/ {
         data.name = "clip-" + uid + ".webm";
         console.log(data);
         this.recordings.push(data);
-        this.$emit('new-recording', {name: data.name, size: data.size })
+        this.$emit("new-recording", { name: data.name, size: data.size });
       }
     },
     async stopRecording() {
@@ -326,7 +339,7 @@ export default /*#__PURE__*/ {
     },
     videoSnapshot() {
       this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
-      this.setView('snapshot');
+      this.setView("snapshot");
     },
     getCanvas() {
       let video = this.$refs.video;
@@ -364,7 +377,7 @@ export default /*#__PURE__*/ {
       return new Blob([ia], { type: mimeString });
     },
     async closeSnapshot() {
-      this.setView('video');
+      this.setView("video");
       this.snapshot = null;
     },
     async downloadSnapshot() {
@@ -389,23 +402,23 @@ export default /*#__PURE__*/ {
       window.URL.revokeObjectURL(url);
     },
     deleteRecording(index) {
-      console.log('deleting' + index)
+      console.log("deleting" + index);
       this.recordings.splice(index, 1);
-      this.$emit('delete-recording', index);
+      this.$emit("delete-recording", index);
     },
     async loadRecording(index) {
       const recording = this.recordings[index];
       const clip = window.URL.createObjectURL(recording);
       this.playerSource = clip;
       this.nowPlaying = index;
-      this.setView('videoPlayer');
-      this.$emit('player-loaded', true);
-      },
+      this.setView("videoPlayer");
+      this.$emit("player-loaded", true);
+    },
     playRecording() {
       this.$refs.videoPlayer.play();
     },
     pausePlayer() {
-      if (this.$refs.videoPlayer !== null ) {
+      if (this.$refs.videoPlayer !== null) {
         this.$refs.videoPlayer.pause();
       }
     },
@@ -415,12 +428,12 @@ export default /*#__PURE__*/ {
       }
     },
     deletePlayerRecording() {
-      this.setView('video');
+      this.setView("video");
       this.deleteRecording(this.nowPlaying);
     },
     closePlayer() {
-      this.setView('video');
-    }
+      this.setView("video");
+    },
   },
 };
 </script>
