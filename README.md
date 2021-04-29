@@ -8,6 +8,11 @@
 * Take snapshots of video
 * Download videos or snapshots
 
+## Demo App
+
+View the Multicorder on [Netlify](https://eloquent-kowalevski-0dbda6.netlify.app/).
+Expect new versions weekly for a while.
+
 ## Why Multicorder?
 
 1. Lightweight
