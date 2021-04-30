@@ -198,7 +198,7 @@ var script = /*#__PURE__*/{
 
   props: {
     videoSource: {
-      type: String,
+      type: Object,
       default: null
     },
     width: {
@@ -217,6 +217,14 @@ var script = /*#__PURE__*/{
       type: Boolean,
       default: true
     },
+    recorderMuted: {
+      type: Boolean,
+      default: true
+    },
+    playerMuted: {
+      type: Boolean,
+      default: true
+    },
     screenshotFormat: {
       type: String,
       default: "image/jpeg"
@@ -226,6 +234,10 @@ var script = /*#__PURE__*/{
       default: () => {
         return ["camera", "screen"];
       }
+    },
+    recorderMode: {
+      type: String,
+      default: "single"
     },
     camerasHeader: {
       type: Array,
@@ -260,12 +272,13 @@ var script = /*#__PURE__*/{
     this.initVideoOptions();
   },
 
-  beforeDestroy() {// this.stopVideo();
+  beforeDestroy() {
+    this.stopVideo();
   },
 
   watch: {
-    videoSource: function (sourceId) {
-      this.changeVideoSource(sourceId);
+    videoSource: function (videoSource) {
+      this.changeVideoSource(videoSource);
     }
   },
   methods: {
@@ -274,15 +287,15 @@ var script = /*#__PURE__*/{
       this.$emit("view-change", view);
     },
 
-    changeVideoSource(sourceId) {
+    changeVideoSource(videoSource) {
       this.stopVideo();
-      this.$emit("video-change", sourceId);
+      this.$emit("video-change", videoSource);
 
-      if (sourceId) {
-        if (sourceId == "screenshare") {
+      if (videoSource) {
+        if (videoSource.value == "screenshare") {
           this.startScreenshare();
         } else {
-          this.loadCamera(sourceId);
+          this.loadCamera(videoSource.value);
         }
       }
     },
@@ -308,8 +321,6 @@ var script = /*#__PURE__*/{
     },
 
     startScreenshare() {
-      console.log("Starting Screenshare");
-
       try {
         navigator.mediaDevices.getDisplayMedia().then(stream => this.loadSrcStream(stream));
       } catch (err) {
@@ -442,9 +453,6 @@ var script = /*#__PURE__*/{
     },
 
     listFromCameras(cameras) {
-      console.log(cameras);
-      console.log(this.browserScreenshareSupported);
-
       if (this.browserScreenshareSupported && cameras.length > 0) {
         return [...this.camerasHeader, ...cameras, ...this.staticVideoOptionsHeader, ...this.staticVideoOptions];
       } else if (this.browserScreenshareSupported && cameras.length === 0) {
@@ -462,15 +470,18 @@ var script = /*#__PURE__*/{
       this.recorder.ondataavailable = event => this.pushVideoData(event.data);
 
       this.recorder.start();
-      console.log(this.recorder.state);
     },
 
     async pushVideoData(data) {
       if (data.size > 0) {
         const uid = await uuid_1.v4();
         data.name = "clip-" + uid + ".webm";
-        console.log(data);
         this.recordings.push(data);
+
+        if (this.recorderMode == "single") {
+          this.setView("videoPlayer");
+        }
+
         this.$emit("new-recording", {
           name: data.name,
           size: data.size
@@ -481,7 +492,6 @@ var script = /*#__PURE__*/{
     async stopRecording() {
       if (this.$refs.video !== null && this.$refs.video.srcObject) {
         this.recorder.stop();
-        console.log("recording stopped");
       }
     },
 
@@ -562,13 +572,16 @@ var script = /*#__PURE__*/{
       document.body.appendChild(a);
       a.style = "display: none";
       a.href = url;
-      a.download = "test.webm";
+      a.download = "video.webm";
       a.click();
       window.URL.revokeObjectURL(url);
     },
 
     deleteRecording(index) {
-      console.log("deleting" + index);
+      if (this.recorderMode == "single") {
+        this.setView("video");
+      }
+
       this.recordings.splice(index, 1);
       this.$emit("delete-recording", index);
     },
@@ -605,6 +618,10 @@ var script = /*#__PURE__*/{
 
     closePlayer() {
       this.setView("video");
+    },
+
+    muteRecorder() {
+      this.$refs.video.mute();
     }
 
   }

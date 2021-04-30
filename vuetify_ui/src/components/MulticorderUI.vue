@@ -112,8 +112,8 @@
 /**
  * For Hot reload load the `*.vue` files from the parent `/src/` directly.
  */
-// import { Multicorder } from "multicorder";
-import { Multicorder } from "../../../src/lib-components/index.js";
+import { Multicorder } from "multicorder";
+// import { Multicorder } from "../../../src/lib-components/index.js";
 
 export default {
   name: "MulticorderUI",
@@ -199,7 +199,7 @@ export default {
     videoStopRecording() {
       this.$refs.multicorder.stopRecording();
       // resume the video, minus recording
-      //this.resume();
+      this.resume();
     },
     resume() {
       this.isPaused = false;

@@ -292,7 +292,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
   },
   props: {
     videoSource: {
-      type: String,
+      type: Object,
       default: null
     },
     width: {
@@ -311,6 +311,14 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       type: Boolean,
       default: true
     },
+    recorderMuted: {
+      type: Boolean,
+      default: true
+    },
+    playerMuted: {
+      type: Boolean,
+      default: true
+    },
     screenshotFormat: {
       type: String,
       default: "image/jpeg"
@@ -320,6 +328,10 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       default: function _default() {
         return ["camera", "screen"];
       }
+    },
+    recorderMode: {
+      type: String,
+      default: "single"
     },
     camerasHeader: {
       type: Array,
@@ -352,11 +364,12 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
   mounted: function mounted() {
     this.initVideoOptions();
   },
-  beforeDestroy: function beforeDestroy() {// this.stopVideo();
+  beforeDestroy: function beforeDestroy() {
+    this.stopVideo();
   },
   watch: {
-    videoSource: function videoSource(sourceId) {
-      this.changeVideoSource(sourceId);
+    videoSource: function videoSource(_videoSource) {
+      this.changeVideoSource(_videoSource);
     }
   },
   methods: {
@@ -364,15 +377,15 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       this.view = view;
       this.$emit("view-change", view);
     },
-    changeVideoSource: function changeVideoSource(sourceId) {
+    changeVideoSource: function changeVideoSource(videoSource) {
       this.stopVideo();
-      this.$emit("video-change", sourceId);
+      this.$emit("video-change", videoSource);
 
-      if (sourceId) {
-        if (sourceId == "screenshare") {
+      if (videoSource) {
+        if (videoSource.value == "screenshare") {
           this.startScreenshare();
         } else {
-          this.loadCamera(sourceId);
+          this.loadCamera(videoSource.value);
         }
       }
     },
@@ -403,8 +416,6 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
     },
     startScreenshare: function startScreenshare() {
       var _this2 = this;
-
-      console.log("Starting Screenshare");
 
       try {
         navigator.mediaDevices.getDisplayMedia().then(function (stream) {
@@ -546,9 +557,6 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       });
     },
     listFromCameras: function listFromCameras(cameras) {
-      console.log(cameras);
-      console.log(this.browserScreenshareSupported);
-
       if (this.browserScreenshareSupported && cameras.length > 0) {
         return [].concat(_toConsumableArray(this.camerasHeader), _toConsumableArray(cameras), _toConsumableArray(this.staticVideoOptionsHeader), _toConsumableArray(this.staticVideoOptions));
       } else if (this.browserScreenshareSupported && cameras.length === 0) {
@@ -569,7 +577,6 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       };
 
       this.recorder.start();
-      console.log(this.recorder.state);
     },
     pushVideoData: function pushVideoData(data) {
       var _this8 = this;
@@ -591,9 +598,12 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
               case 3:
                 uid = _context.sent;
                 data.name = "clip-" + uid + ".webm";
-                console.log(data);
 
                 _this8.recordings.push(data);
+
+                if (_this8.recorderMode == "single") {
+                  _this8.setView("videoPlayer");
+                }
 
                 _this8.$emit("new-recording", {
                   name: data.name,
@@ -618,8 +628,6 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
               case 0:
                 if (_this9.$refs.video !== null && _this9.$refs.video.srcObject) {
                   _this9.recorder.stop();
-
-                  console.log("recording stopped");
                 }
 
               case 1:
@@ -760,7 +768,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
                 document.body.appendChild(a);
                 a.style = "display: none";
                 a.href = url;
-                a.download = "test.webm";
+                a.download = "video.webm";
                 a.click();
                 window.URL.revokeObjectURL(url);
 
@@ -773,7 +781,10 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       }))();
     },
     deleteRecording: function deleteRecording(index) {
-      console.log("deleting" + index);
+      if (this.recorderMode == "single") {
+        this.setView("video");
+      }
+
       this.recordings.splice(index, 1);
       this.$emit("delete-recording", index);
     },
@@ -822,6 +833,9 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
     },
     closePlayer: function closePlayer() {
       this.setView("video");
+    },
+    muteRecorder: function muteRecorder() {
+      this.$refs.video.mute();
     }
   }
 };function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -928,7 +942,7 @@ var __vue_inject_styles__ = undefined;
 var __vue_scope_id__ = undefined;
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-cc6cee80";
+var __vue_module_identifier__ = "data-v-0907e967";
 /* functional template */
 
 var __vue_is_functional_template__ = false;
