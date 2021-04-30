@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "multicorder": "^1.12.0",
+    "multicorder": "file:../multicorder-1.12.5.tgz",
+    "ssri": ">=8.0.1",
     "vue": "^2.6.11",
-    "vuetify": "^2.4.11",
-    "ssri": ">=8.0.1"
+    "vuetify": "^2.4.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
