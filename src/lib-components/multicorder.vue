@@ -33,6 +33,7 @@ export default /*#__PURE__*/ {
       playerSource: null,
       canvas: null,
       snapshot: null,
+      snapshotSource: null,
       cameras: [],
       camerasEmitted: null,
       browserScreenshareSupported: null,
@@ -345,8 +346,9 @@ export default /*#__PURE__*/ {
         this.$refs.video.play();
       }
     },
-    videoSnapshot() {
+    videoSnapshot(fromView) {
       this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
+      this.snapshotSource = fromView;
       this.setView("snapshot");
     },
     getCanvas() {
@@ -385,7 +387,7 @@ export default /*#__PURE__*/ {
       return new Blob([ia], { type: mimeString });
     },
     async closeSnapshot() {
-      this.setView("video");
+      this.setView(this.snapshotSource);
       this.snapshot = null;
     },
     async downloadSnapshot() {

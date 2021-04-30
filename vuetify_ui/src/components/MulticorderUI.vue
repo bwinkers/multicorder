@@ -58,7 +58,7 @@
             >
           </v-col>
           <v-col cols="auto" align="right">
-            <v-icon x-large @click="videoSnapshot" color="teal">mdi-camera</v-icon>
+            <v-icon x-large @click="videoSnapshot(view)" color="teal">mdi-camera</v-icon>
           </v-col>
         </v-row>
 
@@ -94,7 +94,7 @@
 
         <v-row v-show="view == 'snapshot'">
           <v-col>
-            <v-btn class="mx-2" @click="closeSnapshot" fab mdi-icon x-small light
+            <v-btn class="mx-2" @click="closeSnapshot()" fab mdi-icon x-small light
               ><v-icon x-large color="red">mdi-close-circle</v-icon></v-btn
             >
             <v-btn class="mx-2" @click="snapshotDownload" fab mdi-icon x-small light
@@ -112,8 +112,8 @@
 /**
  * For Hot reload load the `*.vue` files from the parent `/src/` directly.
  */
-import { Multicorder } from "multicorder";
-// import { Multicorder } from "../../../src/lib-components/index.js";
+// import { Multicorder } from "multicorder";
+import { Multicorder } from "../../../src/lib-components/index.js";
 
 export default {
   name: "MulticorderUI",
@@ -186,9 +186,8 @@ export default {
       this.controls = "recordingVideo";
       this.$refs.multicorder.startVideoRecording();
     },
-    videoSnapshot() {
-      this.view = "snapshot";
-      this.$refs.multicorder.videoSnapshot();
+    videoSnapshot(fromView) {
+      this.$refs.multicorder.videoSnapshot(fromView);
     },
     videoClose() {
       this.$refs.multicorder.stopVideo();
