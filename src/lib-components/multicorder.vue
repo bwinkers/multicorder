@@ -81,6 +81,10 @@ export default /*#__PURE__*/ {
         return ["camera", "screen"];
       },
     },
+    recorderMode: {
+      type: String,
+      default: "single",
+    },
     camerasHeader: {
       type: Array,
       default: () => {
@@ -161,8 +165,6 @@ export default /*#__PURE__*/ {
         .catch((error) => this.$emit("error", error));
     },
     startScreenshare() {
-      console.log("Starting Screenshare");
-
       try {
         navigator.mediaDevices
           .getDisplayMedia()
@@ -296,8 +298,6 @@ export default /*#__PURE__*/ {
       });
     },
     listFromCameras(cameras) {
-      console.log(cameras);
-      console.log(this.browserScreenshareSupported);
       if (this.browserScreenshareSupported && cameras.length > 0) {
         return [
           ...this.camerasHeader,
@@ -318,21 +318,21 @@ export default /*#__PURE__*/ {
 
       this.recorder.ondataavailable = (event) => this.pushVideoData(event.data);
       this.recorder.start();
-      console.log(this.recorder.state);
     },
     async pushVideoData(data) {
       if (data.size > 0) {
         const uid = await uuidv4();
         data.name = "clip-" + uid + ".webm";
-        console.log(data);
         this.recordings.push(data);
+        if(this.recorderMode == "single") {
+          this.setView("videoPlayer");
+        }
         this.$emit("new-recording", { name: data.name, size: data.size });
       }
     },
     async stopRecording() {
       if (this.$refs.video !== null && this.$refs.video.srcObject) {
         this.recorder.stop();
-        console.log("recording stopped");
       }
     },
     pause() {
@@ -405,12 +405,14 @@ export default /*#__PURE__*/ {
       document.body.appendChild(a);
       a.style = "display: none";
       a.href = url;
-      a.download = "test.webm";
+      a.download = "video.webm";
       a.click();
       window.URL.revokeObjectURL(url);
     },
     deleteRecording(index) {
-      console.log("deleting" + index);
+      if (this.recorderMode == "single") {
+        this.setView("video");  
+      }
       this.recordings.splice(index, 1);
       this.$emit("delete-recording", index);
     },

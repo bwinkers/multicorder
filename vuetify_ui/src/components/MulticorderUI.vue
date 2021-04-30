@@ -14,6 +14,7 @@
             @player-loaded="onPlayerLoaded"
             ref="multicorder"
             :videoTypes="videoTypes"
+            :recorderMode="recorderMode"
           />
         </div>
         <v-select
@@ -162,19 +163,21 @@ export default {
       this.controls = "liveVideo";
     },
     onViewChange(view) {
-      console.log(view);
       this.view = view;
     },
     onNewRecording(recording) {
       this.recordings.push(recording);
-      if (this.recorderMode === "single") {
+      if (this.recorderMode == "single") {
         // Load the video into the player and force disposition
-        this.view = "videoPlayer";
-        this.loadRecording[0];
+        // this.view = "videoPlayer";
+        this.loadRecording(0);
       }
     },
     onDeleteRecording(index) {
       this.recordings.splice(index, 1);
+      if (this.recorderMode == "single") {
+        this.controls = "liveVideo"  
+      }
     },
     onPlayerLoaded() {
       //this.playRecording();
@@ -213,14 +216,19 @@ export default {
       this.$refs.multicorder.downloadSnapshot();
     },
     downloadRecording(index) {
+      if(this.recorderMode === 'single') {
+        index = 0;
+      }
       this.$refs.multicorder.downloadRecording(index);
     },
     deleteRecording(index) {
+      if(this.recorderMode === 'single') {
+        index = 0;
+      }
       this.$refs.multicorder.deleteRecording(index);
     },
     async loadRecording(index) {
       await this.$refs.multicorder.loadRecording(index);
-      this.playRecording();
     },
     playRecording() {
       this.isPlayerPaused = false;
