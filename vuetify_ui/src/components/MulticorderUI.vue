@@ -1,113 +1,107 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
+  <v-container class="text-center  ma-0 pa-0">
+    <v-row class="text-center ">
       <v-col cols="12">
-        <Multicorder
-          :video-source="videoSource"
-          @error="onError"
-          @cameras="onCameras"
-          @video-live="onVideoLive"
-          @view-change="onViewChange"
-          @new-recording="onNewRecording"
-          @delete-recording="onDeleteRecording"
-          @player-loaded="onPlayerLoaded"
-          ref="multicorder"
-          :videoTypes="videoTypes"
-        />
+        <div class="videobox">
+          <Multicorder 
+            :video-source="videoSource"
+            @error="onError"
+            @cameras="onCameras"
+            @video-live="onVideoLive"
+            @view-change="onViewChange"
+            @new-recording="onNewRecording"
+            @delete-recording="onDeleteRecording"
+            @player-loaded="onPlayerLoaded"
+            ref="multicorder"
+            :videoTypes="videoTypes"
+          />
+        </div>
         <v-select
+          v-if="videoSource == null"
           v-show="view == 'video'"
           :items="videoSourceList"
+          :return-object="true"
           v-model="videoSource"
           label="Select video input"
         />
-        <div v-show="view == 'video'" v-if="controls == 'liveVideo'">
-          <v-btn class="mx-2" @click="videoRecord" fab mdi-icon x-small light
-            ><v-icon x-large color="red">mdi-record-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="videoSnapshot" fab mdi-icon x-small light
-            ><v-icon x-large>mdi-camera-iris</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="videoClose" fab mdi-icon x-small light
-            ><v-icon x-large>mdi-close-circle</v-icon></v-btn
-          >
+        <div
+          v-if="videoSource"
+          align="right"
+          background-color="black"
+          class="grey--text videobox"
+        >
+          {{ videoSource.text }}
+          <v-icon @click="videoClose" color="grey">mdi-close-circle</v-icon>
         </div>
-        <div v-show="view == 'video'" v-if="controls == 'recordingVideo'">
-          <v-btn class="mx-2" @click="videoStopRecording" fab mdi-icon x-small light
-            ><v-icon x-large>mdi-stop-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="pause" fab mdi-icon x-small light v-if="!isPaused"
-            ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="resume" fab mdi-icon x-small dark v-if="isPaused"
-            ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="videoSnapshot" fab mdi-icon x-small light
-            ><v-icon x-large>mdi-camera-iris</v-icon></v-btn
-          >
-        </div>
-        <div v-show="view == 'videoPlayer'">
-           <v-btn class="mr-4" @click="playRecording"  fab mdi-icon x-small light
-            ><v-icon x-large>mdi-play-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="pausePlayer" fab mdi-icon x-small light v-if="!isPlayerPaused"
-            ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="resumePlayer" fab mdi-icon x-small dark v-if="isPlayerPaused"
-            ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
-          >
-          <v-btn class="mr-4" @click="deletePlayerRecording"  fab mdi-icon x-small light
-            ><v-icon x-large color="red">mdi-delete-circle</v-icon></v-btn
-          >
-          <v-btn class="mr-4" @click="closePlayer" fab mdi-icon x-small light
-            ><v-icon x-large>mdi-close-circle</v-icon></v-btn
-          >
-        </div>
-        <div v-show="view == 'snapshot'">
-          <v-btn class="mx-2" @click="closeSnapshot" fab mdi-icon x-small light
-            ><v-icon x-large color="red">mdi-close-circle</v-icon></v-btn
-          >
-          <v-btn class="mx-2" @click="snapshotDownload" fab mdi-icon x-small light
-            ><v-icon x-large>mdi-download-circle</v-icon></v-btn
-          >
-        </div>
-        <div v-if="recordings.length > 0">
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left"></th>
-                  <th class="text-left">Name</th>
-                  <th class="text-left">Size</th>
-                  <th class="text-left">Download</th>
-                  <th class="text-left">Play</th>
-                  <th class="text-left">Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in recordings" :key="item.name">
-                  <td class="text-left">{{ index + 1 }}</td>
-                  <td class="text-left">{{ item.name }}</td>
-                  <td class="text-left">{{ item.size }}</td>
-                  <td class="text-left">
-                    <v-btn icon medium @click="downloadRecording(index)"
-                      ><v-icon medium color="green darken-2">mdi-download</v-icon></v-btn
-                    >
-                  </td>
-                  <td class="text-left">
-                    <v-icon medium color="green darken-2" @click="loadRecording(index)"
-                      >mdi-play</v-icon
-                    >
-                  </td>
-                  <td class="text-left">
-                    <v-icon medium color="red lighten-1" @click="deleteRecording(index)"
-                      >mdi-delete</v-icon
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </div>
+
+
+
+        <v-row v-show="view == 'videoPlayer'" class="text-center  mt-3 pt-0">
+          <v-col cols="auto" align="left">
+            <v-icon class="mx-2" large color="red" v-if="!isPlayerMuted" @click="togglePlayerMuted"
+              >mdi-speaker</v-icon
+            >
+            <v-icon class="mx-2" large v-if="isPlayerMuted" @click="togglePlayerMuted"
+              >mdi-speaker-off</v-icon
+            >
+          </v-col>
+          <v-col align="center">
+            <v-btn class="mx-2" @click="playRecording" fab mdi-icon x-small light
+              ><v-icon x-large color="red">mdi-play-circle</v-icon></v-btn
+            >
+            <v-btn class="mx-2" @click="downloadRecording" fab mdi-icon x-small light
+              ><v-icon x-large>mdi-download-circle</v-icon></v-btn
+            >
+            <v-btn class="mx-2" @click="deleteRecording" fab mdi-icon x-small light
+              ><v-icon x-large color="red">mdi-delete-circle</v-icon></v-btn
+            >
+          </v-col>
+          <v-col cols="auto" align="right">
+            <v-icon x-large @click="videoSnapshot" color="teal">mdi-camera</v-icon>
+          </v-col>
+        </v-row>
+
+
+
+
+
+        <v-row v-show="view == 'video' && videoSource != null">
+          <v-col  cols="auto" align="center">
+            <v-icon large color="red" v-if="!isMuted" @click="toggleMuted"
+              >mdi-microphone</v-icon
+            >
+            <v-icon large v-if="isMuted" @click="toggleMuted">mdi-microphone-off</v-icon>
+          </v-col>
+          <v-col align="center">
+            <v-btn v-show="controls == 'liveVideo'" class="mx-2" @click="videoRecord" fab mdi-icon x-small light
+              ><v-icon x-large color="red">mdi-record-circle</v-icon></v-btn
+            >
+            <v-btn v-show="controls == 'recordingVideo'" class="mx-2" @click="videoStopRecording" fab mdi-icon x-small light
+              ><v-icon x-large color="red">mdi-stop-circle</v-icon></v-btn
+            >
+            <v-btn v-show="controls == 'recordingVideo'" class="mx-2" @click="pause" fab mdi-icon x-small light v-if="!isPaused"
+              ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
+            >
+            <v-btn v-show="controls == 'recordingVideo'" class="mx-2" @click="resume" fab mdi-icon x-small dark v-if="isPaused"
+              ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
+            >
+          </v-col>
+          <v-col  cols="auto" align="center">
+            <v-icon x-large @click="videoSnapshot" color="teal">mdi-camera</v-icon>
+          </v-col>
+        </v-row>
+
+        <v-row v-show="view == 'snapshot'">
+          <v-col>
+            <v-btn class="mx-2" @click="closeSnapshot" fab mdi-icon x-small light
+              ><v-icon x-large color="red">mdi-close-circle</v-icon></v-btn
+            >
+            <v-btn class="mx-2" @click="snapshotDownload" fab mdi-icon x-small light
+              ><v-icon x-large>mdi-download-circle</v-icon></v-btn
+            >
+          </v-col>
+        </v-row>
+
       </v-col>
     </v-row>
   </v-container>
@@ -117,13 +111,13 @@
 /**
  * For Hot reload load the `*.vue` files from the parent `/src/` directly.
  */
- import { Multicorder } from "multicorder";
- // import { Multicorder } from '../../../src/lib-components/index.js'
+// import { Multicorder } from "multicorder";
+import { Multicorder } from "../../../src/lib-components/index.js";
 
 export default {
   name: "MulticorderUI",
   components: {
-    Multicorder
+    Multicorder,
   },
   props: {
     videoTypes: {
@@ -131,6 +125,10 @@ export default {
       default: () => {
         return ["camera", "screen"];
       },
+    },
+    recorderMode: {
+      type: String,
+      default: "single",
     },
   },
   data() {
@@ -140,6 +138,8 @@ export default {
       videoSourceList: [],
       isPaused: false,
       isPlayerPaused: false,
+      isMuted: true,
+      isPlayerMuted: true,
       view: "video",
       recordings: [], // local sparsed list of recording data
     };
@@ -167,6 +167,11 @@ export default {
     },
     onNewRecording(recording) {
       this.recordings.push(recording);
+      if (this.recorderMode === "single") {
+        // Load the video into the player and force disposition
+        this.view = "videoPlayer";
+        this.loadRecording[0];
+      }
     },
     onDeleteRecording(index) {
       this.recordings.splice(index, 1);
@@ -184,14 +189,14 @@ export default {
     },
     videoClose() {
       this.$refs.multicorder.stopVideo();
-      this.controls = null;
+      this.view = "video";
+      this.controls = "liveVideo";
       this.videoSource = null;
     },
     videoStopRecording() {
-      this.controls = "liveVideo";
       this.$refs.multicorder.stopRecording();
       // resume the video, minus recording
-      this.resume();
+      //this.resume();
     },
     resume() {
       this.isPaused = false;
@@ -235,6 +240,18 @@ export default {
     closePlayer() {
       this.$refs.multicorder.closePlayer();
     },
+    toggleMuted() {
+      this.isMuted = !this.isMuted;
+    },
+    togglePlayerMuted() {
+      this.isPlayerMuted = !this.isPlayerMuted;
+    },
   },
 };
 </script>
+
+<style scoped>
+.videobox {
+  background-color: black;
+}
+</style>

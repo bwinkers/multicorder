@@ -6,7 +6,7 @@
       dark
     >
       <div class="d-flex align-center">
-      <h1>Multicorder Vuetify Demo</h1>
+      <h1>Multicorder Demo</h1>
       </div>
       <v-spacer></v-spacer>
       
@@ -22,7 +22,7 @@
 
     <v-main>
       <v-row justify="center" align="center">
-        <v-col cols="12" sm="4">
+        <v-col cols="12" sm="4" border="1">
       <MulticorderUI 
         :videoTypes="['screen', 'camera']"
       />

@@ -44,7 +44,7 @@ export default /*#__PURE__*/ {
   },
   props: {
     videoSource: {
-      type: String,
+      type: Object,
       default: null,
     },
     width: {
@@ -60,6 +60,14 @@ export default /*#__PURE__*/ {
       default: true,
     },
     playsinline: {
+      type: Boolean,
+      default: true,
+    },
+    recorderMuted: {
+      type: Boolean,
+      default: true,
+    },
+    playerMuted: {
       type: Boolean,
       default: true,
     },
@@ -111,11 +119,11 @@ export default /*#__PURE__*/ {
     this.initVideoOptions();
   },
   beforeDestroy() {
-    // this.stopVideo();
+    this.stopVideo();
   },
   watch: {
-    videoSource: function (sourceId) {
-      this.changeVideoSource(sourceId);
+    videoSource: function (videoSource) {
+      this.changeVideoSource(videoSource);
     },
   },
   methods: {
@@ -123,14 +131,14 @@ export default /*#__PURE__*/ {
       this.view = view;
       this.$emit("view-change", view);
     },
-    changeVideoSource(sourceId) {
+    changeVideoSource(videoSource) {
       this.stopVideo();
-      this.$emit("video-change", sourceId);
-      if (sourceId) {
-        if (sourceId == "screenshare") {
+      this.$emit("video-change", videoSource);
+      if (videoSource) {
+        if (videoSource.value == "screenshare") {
           this.startScreenshare();
         } else {
-          this.loadCamera(sourceId);
+          this.loadCamera(videoSource.value);
         }
       }
     },
@@ -434,6 +442,9 @@ export default /*#__PURE__*/ {
     closePlayer() {
       this.setView("video");
     },
+    muteRecorder() {
+      this.$refs.video.mute();
+    }
   },
 };
 </script>
