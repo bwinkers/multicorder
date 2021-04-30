@@ -186,6 +186,7 @@ var script = /*#__PURE__*/{
       playerSource: null,
       canvas: null,
       snapshot: null,
+      snapshotSource: null,
       cameras: [],
       camerasEmitted: null,
       browserScreenshareSupported: null,
@@ -507,8 +508,9 @@ var script = /*#__PURE__*/{
       }
     },
 
-    videoSnapshot() {
+    videoSnapshot(fromView) {
       this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
+      this.snapshotSource = fromView;
       this.setView("snapshot");
     },
 
@@ -550,7 +552,7 @@ var script = /*#__PURE__*/{
     },
 
     async closeSnapshot() {
-      this.setView("video");
+      this.setView(this.snapshotSource);
       this.snapshot = null;
     },
 

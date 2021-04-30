@@ -281,6 +281,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
       playerSource: null,
       canvas: null,
       snapshot: null,
+      snapshotSource: null,
       cameras: [],
       camerasEmitted: null,
       browserScreenshareSupported: null,
@@ -648,8 +649,9 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
         this.$refs.video.play();
       }
     },
-    videoSnapshot: function videoSnapshot() {
+    videoSnapshot: function videoSnapshot(fromView) {
       this.snapshot = this.getCanvas().toDataURL(this.screenshotFormat);
+      this.snapshotSource = fromView;
       this.setView("snapshot");
     },
     getCanvas: function getCanvas() {
@@ -707,7 +709,7 @@ var uuid_1 = uuid;var script = /*#__PURE__*/{
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _this10.setView("video");
+                _this10.setView(_this10.snapshotSource);
 
                 _this10.snapshot = null;
 
@@ -942,7 +944,7 @@ var __vue_inject_styles__ = undefined;
 var __vue_scope_id__ = undefined;
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-0907e967";
+var __vue_module_identifier__ = "data-v-5fe75946";
 /* functional template */
 
 var __vue_is_functional_template__ = false;
