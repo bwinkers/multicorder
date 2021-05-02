@@ -7,6 +7,12 @@
 * Playback recordings
 * Take snapshots of video
 * Download videos or snapshots
+sdac
+
+asc
+as
+c
+
 
 ## Demo App
 
@@ -17,7 +23,7 @@ Expect new versions weekly for a while.
 
 1. Lightweight
 
-All of the core logic is in a single Vue 2 component with no depenendcies outside of Vue. All the functionality can harnessed in any Vue 2 or Vue 3 app.
+All of the core logic is in a single Vue 2 component with no . outside of Vue. All the functionality can harnessed in any Vue 2 or Vue 3 app.
 
 2. Batteries included!
 
@@ -31,7 +37,7 @@ This was designed from the outset to work well with AWS Amplify and S3 Storage. 
 
 You can see the app [deployed on Netlify](https://eloquent-kowalevski-0dbda6.netlify.app/).
 
-
+ 
 ## Installing
 
 ```bash

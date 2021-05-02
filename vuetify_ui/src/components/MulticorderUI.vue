@@ -88,7 +88,7 @@
             >
           </v-col>
           <v-col  cols="auto" align="center">
-            <v-icon x-large @click="videoSnapshot" color="teal">mdi-camera</v-icon>
+            <v-icon x-large @click="videoSnapshot(view)" color="teal">mdi-camera</v-icon>
           </v-col>
         </v-row>
 
