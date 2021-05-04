@@ -7,12 +7,6 @@
 * Playback recordings
 * Take snapshots of video
 * Download videos or snapshots
-sdac
-
-asc
-as
-c
-
 
 ## Demo App
 
