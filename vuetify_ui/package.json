@@ -13,7 +13,7 @@
     "multicorder": "^1.13.2",
     "ssri": ">=8.0.1",
     "vue": "^2.6.11",
-    "vuetify": "^2.4.11"
+    "vuetify": "^2.6.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
